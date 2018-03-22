@@ -1,0 +1,26 @@
+---
+title: "ISSP Initial Analysis"
+author: "Maddie Wettach, Samantha Ho and Simon Halliday"
+date: "2018-March -22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r requirements, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(haven)
+library(stargazer)
+library(mosaic)
+```
+
+Maddie/Samantha: I didn't check whether I've labeled these correctly, but I presumed that the data with more version (2.1 for 2005) is the one for 2005. 
+
+```{r read_data}
+ISSP15 <- read_dta("../Data/OriginalData/ZA4350_v2-0-0.dta")
+ISSP05 <- read_dta("../Data/OriginalData/ZA6770_v2-1-0.dta")
+```
+
+
