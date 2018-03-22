@@ -9,6 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+## Requrements for the analysis we do
+Make sure that you have these packages installed. If you don't have them installed, then run `install.packages("packagename")` in the R command line (not in this R Markdown file) to install them on your computer. 
 ```{r requirements, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(haven)
@@ -16,7 +19,8 @@ library(stargazer)
 library(mosaic)
 ```
 
-Maddie/Samantha: I didn't check whether I've labeled these correctly, but I presumed that the data with more version (2.1 for 2005) is the one for 2005. 
+## Read in the data
+Maddie/Samantha: I didn't check whether I've labeled these correctly, but I presumed that the data with later versions (v2.1) is the one for 2005. Am I right?. 
 
 ```{r read_data}
 ISSP15 <- read_dta("../Data/OriginalData/ZA4350_v2-0-0.dta")
