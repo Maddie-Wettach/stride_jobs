@@ -94,7 +94,7 @@ sumInc <-
   left_join(PPPWBsel, by = "country") 
 ```
 
-We need to filter out Venezuela and Taiwan because of missing data we need (the PPP rates for conversion of income)
+We need to filter out Venezuela (VE) and Taiwan (TW) because of missing data we need (the PPP rates for conversion of income)
 ```{r filter_out_VE_TW}
 sumInc <- 
   sumInc %>% 
@@ -105,7 +105,7 @@ sumInc <-
 ```{r}
 IncComp <- 
   sumInc %>% 
-  mutate(pppinc = meaninc / PPP2015)
+  mutate(pppinc = meaninc * PPP2015)
 ```
 
 
@@ -117,20 +117,4 @@ tally(~v2, data = ISSP15)
 ```
 
 
-
-```{r}
-PPPs <- 
-  PPPcodes %>% 
-  filter(Year == 2015 & TRANSACT == "PPPP41") %>% 
-  filter(country %in% sumInc$country)
-```
-
-
-
-```{r}
-Inc1 <- 
-  narInc %>% 
-  mutate(incstring = as.character(value)) %>%
-  filter(str_detect(value, "999"))
-```
 
