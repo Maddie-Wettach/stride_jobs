@@ -17,15 +17,104 @@ library(tidyverse)
 library(haven)
 library(stargazer)
 library(mosaic)
+library(readxl)
 ```
 
 ## Read in the data
-Maddie/Samantha: I didn't check whether I've labeled these correctly, but I presumed that the data with later versions (v2.1) is the one for 2005. Am I right?. 
+Maddie/Samantha: I didn't check whether I've labeled these correctly, but I presumed that the data with later versions (v2.1) is the one for 2005. Am I right? 
 
 ```{r read_data}
-ISSP15 <- read_dta("../Data/OriginalData/ZA4350_v2-0-0.dta")
-ISSP05 <- read_dta("../Data/OriginalData/ZA6770_v2-1-0.dta")
+ISSP05 <- read_dta("../Data/OriginalData/ZA4350_v2-0-0.dta")
+ISSP15 <- read_stata("../Data/OriginalData/ZA6770_v2-1-0.dta")
 ```
 
-A change to this file. 
+```{r}
+PPPcodes <- read_csv("../Data/SNA_TABLE4_27032018185918382.csv")
+PPPWB <- read_csv("../Data/API_PA.NUS.PPP_DS2_en_csv_v2.csv")
+CountryCodes <- read_xlsx("../Data/country_codes.xlsx", col_names = TRUE)
+```
+
+```{r}
+income15 <- 
+  ISSP15 %>%
+  select(country, c_alphan, CASEID, contains("_RINC"))
+```
+
+```{r}
+narInc <- 
+  income15 %>%
+  gather(code, value, -CASEID, -country, -c_alphan) 
+```
+
+```{r}
+narInc <- 
+  narInc %>% 
+  mutate(value = ifelse(value %in% c(999990, 999996, 999997, 999998, 999999, 
+                                     9999990, 9999996, 9999997, 9999998, 9999999, 
+                                     99999990, 99999996, 99999998, 99999997, 99999999), NA, value))
+```
+
+```{r}
+narInc <- 
+  narInc %>% 
+  filter(complete.cases(value))
+
+```
+
+```{r}
+sumInc <- 
+  narInc %>% 
+  group_by(country) %>% 
+  summarise(meaninc = mean(value))
+countries <- sumInc$country
+```
+
+
+```{r}
+PPPcodes <- 
+  PPPcodes %>%
+  mutate(c_alphan3 = LOCATION) %>%
+  left_join(CountryCodes, by = "c_alphan3")
+```
+
+
+
+```{r}
+PPPWB <- 
+  PPPWB %>%
+  mutate(c_alphan3 = `Country Code`) 
+PPPWBsel <- 
+  PPPWB %>% 
+  select(`2015`, c_alphan3) %>% 
+  rename(PPP2015 = `2015`) %>% 
+  left_join(CountryCodes, by = "c_alphan3") %>%
+  filter(country %in% countries)
+sumInc <- 
+  sumInc %>%
+  left_join(PPPWBsel, by = "country") 
+```
+
+We need to filter out Venezuela (VE) and Taiwan (TW) because of missing data we need (the PPP rates for conversion of income)
+```{r filter_out_VE_TW}
+sumInc <- 
+  sumInc %>% 
+  filter(!country %in% c(158,862)) 
+```
+
+
+```{r}
+IncComp <- 
+  sumInc %>% 
+  mutate(pppinc = meaninc * PPP2015)
+```
+
+
+First of all, what are the variables that we want to look at: 
+
+
+```{r}
+tally(~v2, data = ISSP15)
+```
+
+
 
