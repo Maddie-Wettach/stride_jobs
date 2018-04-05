@@ -33,8 +33,19 @@ ISSP15 <- read_stata("../Data/OriginalData/ZA6770_v2-1-0.dta")
 ```{r}
 PPPcodes <- read_csv("../Data/SNA_TABLE4_27032018185918382.csv")
 PPPWB <- read_csv("../Data/API_PA.NUS.PPP_DS2_en_csv_v2.csv")
+WBERs <- read_csv("../Data/officialexchangerate.csv")
 CountryCodes <- read_xlsx("../Data/country_codes.xlsx", col_names = TRUE)
 ```
+
+We need to select down the WB Exchange Rates just to 2015 and country codes. 
+```{r}
+WBER15 <- 
+  WBERs %>% 
+  select(`Country Code`, `2015`) %>% 
+  rename(c_alphan3 = `Country Code`, 
+         exchangrate = `2015`)
+```
+
 
 ```{r}
 income15 <- 
@@ -93,7 +104,13 @@ PPPWBsel <-
 sumInc <- 
   sumInc %>%
   left_join(PPPWBsel, by = "country") 
+sumInc <- 
+  sumInc %>%
+  left_join(WBER15, by = "c_alphan3") #%>% Maddie to fill in list of countries
+  mutate(exchangerate = ifelse(c_alphan3 %in% c("DEU",), 0.9016590, exchangerate))
+
 ```
+
 
 We need to filter out Venezuela (VE) and Taiwan (TW) because of missing data we need (the PPP rates for conversion of income)
 ```{r filter_out_VE_TW}
