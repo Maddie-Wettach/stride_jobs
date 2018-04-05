@@ -114,11 +114,11 @@ sumInc <-
 ```{r}
 sumInc <-
   sumInc %>%
-  mutate(exchangerate = ifelse(c_alphan3 %in% c("AUT", "BEL", "BRG", "HRV", "CYP", "CZE", 
+  mutate(exchangrate = ifelse(c_alphan3 %in% c("AUT", "BEL", "BRG", "HRV", "CYP", "CZE", 
                                                 "DNK", "EST", "FIN", "FRA", "DEU", "GRC",
                                                 "HUN", "IRL", "ITA", "LVA", "LTU", "LUX",
                                                 "MLT", "NLD", "POL", "PRT", "ROU", "SVK",
-                                                "SVN", "ESP", "SWE"), 0.9016590, exchangerate))
+                                                "SVN", "ESP", "SWE"), 0.9016590, exchangrate))
 ```
 
 
