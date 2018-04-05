@@ -117,4 +117,3 @@ tally(~v2, data = ISSP15)
 ```
 
 
-
