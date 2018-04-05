@@ -24,7 +24,7 @@ library(readxl)
 Maddie/Samantha: I didn't check whether I've labeled these correctly, but I presumed that the data with later versions (v2.1) is the one for 2005. Am I right? 
 
 ```{r read_data}
-ISSP05 <- read_dta("../Data/OriginalData/ZA4350_v2-0-0.dta")
+ISSP05 <- read_stata("../Data/OriginalData/ZA4350_v2-0-0.dta")
 ISSP15 <- read_stata("../Data/OriginalData/ZA6770_v2-1-0.dta")
 ```
 
@@ -58,7 +58,6 @@ narInc <-
 narInc <- 
   narInc %>% 
   filter(complete.cases(value))
-
 ```
 
 ```{r}
@@ -105,7 +104,7 @@ sumInc <-
 ```{r}
 IncComp <- 
   sumInc %>% 
-  mutate(pppinc = meaninc * PPP2015)
+  mutate(pppinc = meaninc / PPP2015)
 ```
 
 
