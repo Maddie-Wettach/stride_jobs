@@ -121,7 +121,6 @@ sumInc <-
                                                 "SVN", "ESP", "SWE"), 0.9016590, exchangrate))
 ```
 
-
 We need to filter out Venezuela (VE) and Taiwan (TW) because of missing data we need (the PPP rates for conversion of income)
 ```{r filter_out_VE_TW}
 sumInc <- 
@@ -133,13 +132,27 @@ sumInc <-
 ```{r}
 IncComp <- 
   sumInc %>% 
-  mutate(pppinc = meaninc / PPP2015)
+  mutate(pppinc = meaninc/PPP2015)
 ```
 
 
-First of all, what are the variables that we want to look at: 
+```{r}
+IncComp %>% 
+  ggplot(aes(x = reorder(c_alphan3, pppinc), y = pppinc)) + 
+  geom_bar(stat = "identity",  fill = "#31a354") + #The color is defined by hexadecimal code here that I grabbed from colorbrewer2.org
+  theme(#axis.text.y = element_text(angle = 45, hjust = 1), 
+        text = element_text(size = 10)) + 
+  ylab("PPP Converted Individual Reported Income, 2015 USD") + 
+  xlab("") + #We don't realy need a label for the countries
+  coord_flip() + # Testing what it looks like to have countries on the vertical axis
+  theme_bw() + 
+  labs(title = "Personally Reported Individual Income By PERIOD", #Samantha can you check what period this is over. I don't know what they report it as being, but annual would be scary.  
+       subtitle = "Source: ISSP, 2015")
+ggsave(file = "../figures/country_ind_income.png", width = 8, height = 6, units = c("in"), dpi = 300)
+```
 
 
+Next, what are the variables that we want to look at: 
 ```{r}
 tally(~v2, data = ISSP15)
 ```
