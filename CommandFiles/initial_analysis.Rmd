@@ -4,7 +4,7 @@ author: "Maddie Wettach, Samantha Ho and Simon Halliday"
 date: "2018-March -22"
 output: html_document
 ---
-```
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -123,7 +123,7 @@ sumInc <-
 
 
 
-```{r}
+```{r, eval = F}
 sumInc <-
   sumInc %>%
   mutate(exchangerate = ifelse(c_alphan3 %in% c("AUT", "BEL", "BRG", "HRV", "CYP", "CZE", 
@@ -177,6 +177,7 @@ firmpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v46)
 jobpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v49)
 stress15 <- ISSP15 %>% select(country, c_alphan, CASEID, v31)
 ```
+
 Replace missing values with NA
 ```{r}
 satis15 <- satis15 %>% mutate(v44 = ifelse(v44 %in% c(0, 8, 9), NA, v44))
@@ -184,10 +185,11 @@ firmpride15 <- firmpride15 %>% mutate(v46 = ifelse(v46 %in% c(0, 8), NA, v46))
 jobpride15 <- jobpride15 %>% mutate(v49 = ifelse(v49 %in% c(0, 8), NA, v49))
 stress15 <- stress15 %>% mutate(v31 = ifelse(v31 %in% c(0, 8), NA, v31))
 ```
+
 Create df with summaries of new variables
 ```{r}
 sum15 <- firmpride15 %>% 
           group_by(country) %>%
-          summarise(meanfp = mean(v46))
+          summarise(meanfp = mean(v46, na.rm = TRUE))
 ```
 
