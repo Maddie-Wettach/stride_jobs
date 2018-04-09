@@ -106,19 +106,30 @@ sumInc <-
   left_join(PPPWBsel, by = "country") 
 sumInc <- 
   sumInc %>%
-  left_join(WBER15, by = "c_alphan3")
-  
-
+  left_join(WBER15, by = "c_alphan3") %>% 
+  arrange(c_alphan)
+countrycodes <- sumInc$c_alphan 
 ```
+
+We now need to define the period over which the income is measured because the income is either annual or monthly depending on the country. 
+
+```{r}
+sumInc <- 
+  sumInc %>% 
+  mutate(inctype = ifelse(c_alphan %in% c("CN", "DK", "JP", "NO", "NZ", "US"), "annual", "monthly"),
+         incadj = ifelse(inctype == "annual", 12, 1))
+```
+
+
 
 ```{r}
 sumInc <-
   sumInc %>%
-  mutate(exchangrate = ifelse(c_alphan3 %in% c("AUT", "BEL", "BRG", "HRV", "CYP", "CZE", 
+  mutate(exchangerate = ifelse(c_alphan3 %in% c("AUT", "BEL", "BRG", "HRV", "CYP", "CZE", 
                                                 "DNK", "EST", "FIN", "FRA", "DEU", "GRC",
                                                 "HUN", "IRL", "ITA", "LVA", "LTU", "LUX",
                                                 "MLT", "NLD", "POL", "PRT", "ROU", "SVK",
-                                                "SVN", "ESP", "SWE"), 0.9016590, exchangrate))
+                                                "SVN", "ESP", "SWE"), 0.9016590, exchangerate))
 ```
 
 We need to filter out Venezuela (VE) and Taiwan (TW) because of missing data we need (the PPP rates for conversion of income)
@@ -132,13 +143,14 @@ sumInc <-
 ```{r}
 IncComp <- 
   sumInc %>% 
-  mutate(pppinc = meaninc/PPP2015)
+  mutate(pppinc = meaninc/PPP2015, 
+         monthinc = pppinc/incadj)
 ```
 
 
 ```{r}
 IncComp %>% 
-  ggplot(aes(x = reorder(c_alphan3, pppinc), y = pppinc)) + 
+  ggplot(aes(x = reorder(c_alphan3, monthinc), y = monthinc)) + 
   geom_bar(stat = "identity",  fill = "#31a354") + #The color is defined by hexadecimal code here that I grabbed from colorbrewer2.org
   theme(#axis.text.y = element_text(angle = 45, hjust = 1), 
         text = element_text(size = 10)) + 
@@ -146,8 +158,9 @@ IncComp %>%
   xlab("") + #We don't realy need a label for the countries
   coord_flip() + # Testing what it looks like to have countries on the vertical axis
   theme_bw() + 
-  labs(title = "Personally Reported Individual Income By PERIOD", #Samantha can you check what period this is over. I don't know what they report it as being, but annual would be scary.  
-       subtitle = "Source: ISSP, 2015")
+  labs(title = "Personally Reported Individual Monthly Income",  
+       subtitle = "Source: ISSP, 2015", 
+       caption = "(Note: Work in progress. Some incomes are gross and others are net of taxes)")
 ggsave(file = "../figures/country_ind_income.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
