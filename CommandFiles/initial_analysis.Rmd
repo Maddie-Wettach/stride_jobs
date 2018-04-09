@@ -46,7 +46,7 @@ WBER15 <-
          exchangrate = `2015`)
 ```
 
-
+Here we create a new object and select down just to the variables we need for the individual income analysis. 
 ```{r}
 income15 <- 
   ISSP15 %>%
