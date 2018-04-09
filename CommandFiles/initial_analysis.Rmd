@@ -96,7 +96,7 @@ PPPWB <-
   PPPWB %>%
   mutate(c_alphan3 = `Country Code`) 
 PPPWBsel <- 
-  PPPWB %>% 
+  PPPWB %>%
   select(`2015`, c_alphan3) %>% 
   rename(PPP2015 = `2015`) %>% 
   left_join(CountryCodes, by = "c_alphan3") %>%
@@ -107,7 +107,7 @@ sumInc <-
 sumInc <- 
   sumInc %>%
   left_join(WBER15, by = "c_alphan3") #%>% Maddie to fill in list of countries
-  mutate(exchangerate = ifelse(c_alphan3 %in% c("DEU",), 0.9016590, exchangerate))
+  #mutate(exchangerate = ifelse(c_alphan3 %in% c("DEU",), 0.9016590, exchangerate))
 
 ```
 
