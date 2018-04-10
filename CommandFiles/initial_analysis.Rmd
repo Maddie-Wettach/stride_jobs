@@ -97,7 +97,7 @@ PPPWB <-
   PPPWB %>%
   mutate(c_alphan3 = `Country Code`) 
 PPPWBsel <- 
-  PPPWB %>% 
+  PPPWB %>%
   select(`2015`, c_alphan3) %>% 
   rename(PPP2015 = `2015`) %>% 
   left_join(CountryCodes, by = "c_alphan3") %>%
@@ -107,10 +107,15 @@ sumInc <-
   left_join(PPPWBsel, by = "country") 
 sumInc <- 
   sumInc %>%
+<<<<<<< HEAD
+  left_join(WBER15, by = "c_alphan3") #%>% Maddie to fill in list of countries
+  #mutate(exchangerate = ifelse(c_alphan3 %in% c("DEU",), 0.9016590, exchangerate))
+=======
   left_join(WBER15, by = "c_alphan3") %>% 
   arrange(c_alphan)
 countrycodes <- sumInc$c_alphan 
 ```
+>>>>>>> f4b7e46067daaf228a1548550b40be44b9f5b038
 
 We now need to define the period over which the income is measured because the income is either annual or monthly depending on the country. 
 
@@ -170,7 +175,7 @@ Next, what are the variables that we want to look at:
 ```{r}
 tally(~v2, data = ISSP15)
 ```
-New variables for analysis: General satisfaction, Pride in firm , Pride in occupation, Stress
+Maddie: New variables for analysis: General satisfaction, Pride in firm , Pride in occupation, Stress
 ```{r}
 satis15 <- ISSP15 %>% select(country, c_alphan, CASEID, v44)
 firmpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v46)
@@ -180,7 +185,7 @@ relman15 <- ISSP15 %>% select(country, c_alphan, CASEID, v42)
 relcol15 <- ISSP15 %>% select(country, c_alphan, CASEID, v43)
 ```
 
-Replace missing values with NA
+Maddie: Replace missing values with NA
 ```{r}
 satis15 <- satis15 %>% mutate(v44 = 8 - ifelse(v44 %in% c(0, 8, 9), NA, v44))
 firmpride15 <- firmpride15 %>% mutate(v46 = 6 - ifelse(v46 %in% c(0, 8), NA, v46))
@@ -188,7 +193,7 @@ jobpride15 <- jobpride15 %>% mutate(v49 = 6 -  ifelse(v49 %in% c(0, 8), NA, v49)
 stress15 <- stress15 %>% mutate(v31 = 6 - ifelse(v31 %in% c(0, 8), NA, v31))
 ```
 
-Create df with summaries of new variables
+Maddie: Create df with summaries of new variables
 ```{r}
 sum15 <- firmpride15 %>% 
           group_by(country) %>%
