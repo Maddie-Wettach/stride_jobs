@@ -5,6 +5,7 @@ date: "2018-March -22"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -127,7 +128,7 @@ sumInc <-
 
 
 
-```{r}
+```{r, eval = F}
 sumInc <-
   sumInc %>%
   mutate(exchangerate = ifelse(c_alphan3 %in% c("AUT", "BEL", "BRG", "HRV", "CYP", "CZE", 
@@ -173,6 +174,52 @@ ggsave(file = "../figures/country_ind_income.png", width = 8, height = 6, units 
 Next, what are the variables that we want to look at: 
 ```{r}
 tally(~v2, data = ISSP15)
+```
+New variables for analysis: General satisfaction, Pride in firm , Pride in occupation, Stress
+```{r}
+satis15 <- ISSP15 %>% select(country, c_alphan, CASEID, v44)
+firmpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v46)
+jobpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v49)
+stress15 <- ISSP15 %>% select(country, c_alphan, CASEID, v31)
+```
+
+Replace missing values with NA
+```{r}
+satis15 <- satis15 %>% mutate(v44 = ifelse(v44 %in% c(0, 8, 9), NA, v44))
+firmpride15 <- firmpride15 %>% mutate(v46 = ifelse(v46 %in% c(0, 8), NA, v46))
+jobpride15 <- jobpride15 %>% mutate(v49 = ifelse(v49 %in% c(0, 8), NA, v49))
+stress15 <- stress15 %>% mutate(v31 = ifelse(v31 %in% c(0, 8), NA, v31))
+```
+
+Create df with summaries of new variables
+```{r}
+sum15 <- firmpride15 %>% 
+          group_by(country) %>%
+          summarise(meanfp = mean(v46, na.rm = TRUE))
+sumsat15 <- satis15 %>%
+          group_by(country) %>%
+          summarise(meansat = mean(v44, na.rm = TRUE))
+sumjp15 <- jobpride15 %>%
+          group_by(country) %>%
+          summarise(meanjp = mean(v49, na.rm = TRUE))
+sumstr15 <- stress15 %>%
+          group_by(country) %>%
+          summarise(meanstr = mean(v31, na.rm = TRUE))
+
+sum15 <- sum15 %>%
+        left_join(sumsat15, by = "country")
+sum15 <- sum15 %>%
+        left_join(sumjp15, by = "country")
+sum15 <- sum15 %>%
+        left_join(sumstr15, by = "country")
+```
+
+
+Simon: I'm adding Maddie's sum15 to the sumInc data that I already created: 
+```{r}
+sumInc <- 
+  sumInc %>% 
+  left_join(sum15, by = "country")
 ```
 
 
