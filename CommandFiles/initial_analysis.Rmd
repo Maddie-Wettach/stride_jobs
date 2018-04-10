@@ -191,6 +191,8 @@ satis15 <- satis15 %>% mutate(v44 = 8 - ifelse(v44 %in% c(0, 8, 9), NA, v44))
 firmpride15 <- firmpride15 %>% mutate(v46 = 6 - ifelse(v46 %in% c(0, 8), NA, v46))
 jobpride15 <- jobpride15 %>% mutate(v49 = 6 -  ifelse(v49 %in% c(0, 8), NA, v49))
 stress15 <- stress15 %>% mutate(v31 = 6 - ifelse(v31 %in% c(0, 8), NA, v31))
+relman15 <- relman15 %>% mutate(v42 = 6 - ifelse(v42 %in% c(0,8), NA, v42))
+relcol15 <- relcol15 %>% mutate(v43 = 6 - ifelse(v43 %in% c(0,8), NA, v43))
 ```
 
 Maddie: Create df with summaries of new variables
@@ -198,6 +200,7 @@ Maddie: Create df with summaries of new variables
 sum15 <- firmpride15 %>% 
           group_by(country) %>%
           summarise(meanfp = mean(v46, na.rm = TRUE))
+
 sumsat15 <- satis15 %>%
           group_by(country) %>%
           summarise(meansat = mean(v44, na.rm = TRUE))
@@ -208,12 +211,20 @@ sumstr15 <- stress15 %>%
           group_by(country) %>%
           summarise(meanstr = mean(v31, na.rm = TRUE))
 
+sumrelm15 <- relman15 %>%
+          group_by(country) %>%
+          summarise(meanrelman = mean(v42, na.rm = TRUE))
+sumrelc15 <- relcol15 %>%
+          group_by(country) %>%
+          summarise(meanrelcol = mean(v43, na.rm = TRUE))
+
+
 sum15 <- sum15 %>%
-        left_join(sumsat15, by = "country")
-sum15 <- sum15 %>%
-        left_join(sumjp15, by = "country")
-sum15 <- sum15 %>%
-        left_join(sumstr15, by = "country")
+        left_join(sumsat15, by = "country") %>%
+        left_join(sumjp15, by = "country") %>%
+        left_join(sumstr15, by = "country") %>%
+        left_join(sumrelm15, by = "country") %>%
+        left_join(sumrelc15, by = "country")
 ```
 
 
