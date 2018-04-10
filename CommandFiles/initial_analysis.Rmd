@@ -191,5 +191,21 @@ Create df with summaries of new variables
 sum15 <- firmpride15 %>% 
           group_by(country) %>%
           summarise(meanfp = mean(v46, na.rm = TRUE))
+sumsat15 <- satis15 %>%
+          group_by(country) %>%
+          summarise(meansat = mean(v44, na.rm = TRUE))
+sumjp15 <- jobpride15 %>%
+          group_by(country) %>%
+          summarise(meanjp = mean(v49, na.rm = TRUE))
+sumstr15 <- stress15 %>%
+          group_by(country) %>%
+          summarise(meanstr = mean(v31, na.rm = TRUE))
+
+sum15 <- sum15 %>%
+        left_join(sumsat15, by = "country")
+sum15 <- sum15 %>%
+        left_join(sumjp15, by = "country")
+sum15 <- sum15 %>%
+        left_join(sumstr15, by = "country")
 ```
 
