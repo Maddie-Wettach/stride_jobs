@@ -209,3 +209,12 @@ sum15 <- sum15 %>%
         left_join(sumstr15, by = "country")
 ```
 
+
+Simon: I'm adding Maddie's sum15 to the sumInc data that I already created: 
+```{r}
+sumInc <- 
+  sumInc %>% 
+  left_join(sum15, by = "country")
+```
+
+
