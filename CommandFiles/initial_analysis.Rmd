@@ -175,7 +175,7 @@ Next, what are the variables that we want to look at:
 ```{r}
 tally(~v2, data = ISSP15)
 ```
-New variables for analysis: General satisfaction, Pride in firm , Pride in occupation, Stress
+Maddie: New variables for analysis: General satisfaction, Pride in firm , Pride in occupation, Stress
 ```{r}
 satis15 <- ISSP15 %>% select(country, c_alphan, CASEID, v44)
 firmpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v46)
@@ -183,7 +183,7 @@ jobpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v49)
 stress15 <- ISSP15 %>% select(country, c_alphan, CASEID, v31)
 ```
 
-Replace missing values with NA
+Maddie: Replace missing values with NA
 ```{r}
 satis15 <- satis15 %>% mutate(v44 = ifelse(v44 %in% c(0, 8, 9), NA, v44))
 firmpride15 <- firmpride15 %>% mutate(v46 = ifelse(v46 %in% c(0, 8), NA, v46))
@@ -191,7 +191,7 @@ jobpride15 <- jobpride15 %>% mutate(v49 = ifelse(v49 %in% c(0, 8), NA, v49))
 stress15 <- stress15 %>% mutate(v31 = ifelse(v31 %in% c(0, 8), NA, v31))
 ```
 
-Create df with summaries of new variables
+Maddie: Create df with summaries of new variables
 ```{r}
 sum15 <- firmpride15 %>% 
           group_by(country) %>%
