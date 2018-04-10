@@ -176,14 +176,16 @@ satis15 <- ISSP15 %>% select(country, c_alphan, CASEID, v44)
 firmpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v46)
 jobpride15 <- ISSP15 %>% select(country, c_alphan, CASEID, v49)
 stress15 <- ISSP15 %>% select(country, c_alphan, CASEID, v31)
+relman15 <- ISSP15 %>% select(country, c_alphan, CASEID, v42)
+relcol15 <- ISSP15 %>% select(country, c_alphan, CASEID, v43)
 ```
 
 Replace missing values with NA
 ```{r}
-satis15 <- satis15 %>% mutate(v44 = ifelse(v44 %in% c(0, 8, 9), NA, v44))
-firmpride15 <- firmpride15 %>% mutate(v46 = ifelse(v46 %in% c(0, 8), NA, v46))
-jobpride15 <- jobpride15 %>% mutate(v49 = ifelse(v49 %in% c(0, 8), NA, v49))
-stress15 <- stress15 %>% mutate(v31 = ifelse(v31 %in% c(0, 8), NA, v31))
+satis15 <- satis15 %>% mutate(v44 = 8 - ifelse(v44 %in% c(0, 8, 9), NA, v44))
+firmpride15 <- firmpride15 %>% mutate(v46 = 6 - ifelse(v46 %in% c(0, 8), NA, v46))
+jobpride15 <- jobpride15 %>% mutate(v49 = 6 -  ifelse(v49 %in% c(0, 8), NA, v49))
+stress15 <- stress15 %>% mutate(v31 = 6 - ifelse(v31 %in% c(0, 8), NA, v31))
 ```
 
 Create df with summaries of new variables
@@ -217,4 +219,36 @@ sumInc <-
   left_join(sum15, by = "country")
 ```
 
+```{r}
+sumInc <- 
+  sumInc %>%
+  mutate(pppinc = meaninc/PPP2015, 
+         monthinc = pppinc/incadj)
+```
+
+
+```{r}
+favstats(~meanjp, data = sumInc)
+```
+
+
+```{r ggplot1}
+sumInc %>% 
+  ggplot(aes(x = meanjp, y = meansat)) + 
+  geom_text(aes(label = c_alphan3)) + 
+  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
+  geom_vline(xintercept = 3.65, lty = 2, color = "pink") +
+  theme_bw()
+```
+
+
+
+```{r}
+sumInc %>% 
+  ggplot(aes(x = monthinc, y = meansat)) + 
+  geom_text(aes(label = c_alphan3)) + 
+  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
+  #geom_vline(xintercept = 3.65, lty = 2, color = "pink") +
+  theme_bw()
+```
 
