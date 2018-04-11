@@ -107,10 +107,8 @@ sumInc <-
   left_join(PPPWBsel, by = "country") 
 sumInc <- 
   sumInc %>%
-<<<<<<< HEAD
   left_join(WBER15, by = "c_alphan3") #%>% Maddie to fill in list of countries
   #mutate(exchangerate = ifelse(c_alphan3 %in% c("DEU",), 0.9016590, exchangerate))
-=======
   left_join(WBER15, by = "c_alphan3") %>% 
   arrange(c_alphan)
 countrycodes <- sumInc$c_alphan 
@@ -252,34 +250,51 @@ favstats(~meanjp, data = sumInc)
 sumInc %>% 
   ggplot(aes(x = meanjp, y = meansat)) + 
   geom_text(aes(label = c_alphan3)) + 
-  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
-  geom_vline(xintercept = 3.65, lty = 2, color = "pink") +
+  geom_hline(yintercept = 5.3, lty = 2, color = "#7fcdbb") + 
+  geom_vline(xintercept = 3.65, lty = 2, color = "#7fcdbb") +
   theme_bw() +
   ylab("Mean job satisfaction") + 
-  xlab("Mean job pride")
+  xlab("Mean job pride") +
+  labs(title = "Job Satisfaction and Individual Job Pride Across Countries",  
+       subtitle = "ISSP, 2015", 
+       caption = "Note: Work in progress. Halliday, Ho '21 and Wettach '20.") +
+  theme(plot.caption = element_text(size = 8))
+ggsave(file = "../figures/country_satisfaction_pride.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
 ```{r}
 sumInc %>% 
   ggplot(aes(x = meanfp, y = meansat)) + 
+  stat_smooth(geom = "line", alpha = 0.4, size = 1, method = "lm", se = FALSE, col = "#2c7fb8") +
   geom_text(aes(label = c_alphan3)) + 
-  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
-  geom_vline(xintercept = 3.61, lty = 2, color = "pink") +
+  geom_hline(yintercept = 5.3, lty = 2, color = "#7fcdbb") + 
+  geom_vline(xintercept = 3.61, lty = 2, color = "#7fcdbb") +
   theme_bw() +
   ylab("Mean job satisfaction") + 
-  xlab("Mean firm pride")
+  xlab("Mean firm pride") +
+  labs(title = "Job Satisfaction and Pride in Firms Across Countries",  
+       subtitle = "ISSP, 2015; Fitted linear regression", 
+       caption = "Note: Work in progress. Halliday, Ho '21 and Wettach '20.") +
+  theme(plot.caption = element_text(size = 8))
+ggsave(file = "../figures/country_satisfaction_firmpride.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
 
 ```{r}
 sumInc %>% 
   ggplot(aes(x = monthinc, y = meansat)) + 
+    stat_smooth(geom = "line", alpha = 0.4, size = 1, method = "lm", se = FALSE, col = "#2c7fb8") +
   geom_text(aes(label = c_alphan3)) + 
-  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
-  #geom_vline(xintercept = 3.65, lty = 2, color = "pink") +
+  geom_hline(yintercept = 5.3, lty = 2, color = "#7fcdbb") + 
+  #geom_vline(xintercept = 3.65, lty = 2, color = "#7fcdbb") +
   theme_bw() +
   ylab("Mean job satisfaction") + 
-  xlab("Mean monthly income")
+  xlab("Mean monthly income") +
+  labs(title = "Job Satisfaction and Mean Reported Monthly Income Across Countries",  
+       subtitle = "ISSP, 2015; Fitted linear regression", 
+       caption = "Note: Work in progress. Halliday, Ho '21 and Wettach '20.") +
+  theme(plot.caption = element_text(size = 8))
+ggsave(file = "../figures/country_satisfaction_monthinc.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
 ```{r}
@@ -290,44 +305,66 @@ favstats(~meanrelcol, data=sumInc)
 ```{r}
 sumInc %>% 
   ggplot(aes(x = meanrelman, y = meansat)) + 
+  stat_smooth(geom = "line", alpha = 0.4, size = 1, method = "lm", se = FALSE, col = "#2c7fb8") +
   geom_text(aes(label = c_alphan3)) + 
-  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
-  geom_vline(xintercept = 3.72, lty = 2, color = "pink") +
+  geom_hline(yintercept = 5.3, lty = 2, color = "#7fcdbb") + 
+  geom_vline(xintercept = 3.72, lty = 2, color = "#7fcdbb") +
   theme_bw() +
-  ylab("Mean job satisfaction") + 
-  xlab("Mean quality of employee-management relations")
+  ylab("Mean job satisfaction (1 = very poor to 7 = very good)") + 
+  xlab("Mean quality of employee-management relations (1 = very poor to 5 = very good)") +
+  labs(title = "Job Satisfaction and Relationships with Management Across Countries",  
+       subtitle = "ISSP, 2015; Fitted linear regression", 
+       caption = "Note: Work in progress. Halliday, Ho '21 and Wettach '20.") +
+  theme(plot.caption = element_text(size = 8))
+ggsave(file = "../figures/country_satisfaction_management.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
 ```{r}
 sumInc %>% 
   ggplot(aes(x = meanrelman, y = meanfp)) + 
   geom_text(aes(label = c_alphan3)) + 
-  geom_hline(yintercept = 3.61, lty = 2, color = "pink") + 
-  geom_vline(xintercept = 3.72, lty = 2, color = "pink") +
+  geom_hline(yintercept = 3.61, lty = 2, color = "#7fcdbb") + 
+  geom_vline(xintercept = 3.72, lty = 2, color = "#7fcdbb") +
   theme_bw() +
-  ylab("Mean firm pride") + 
-  xlab("Mean quality of employee-management relations")
+  ylab("Mean firm pride (1 = very poor to 5 = very good)") + 
+  xlab("Mean quality of employee-management relations (1 to 5)") +
+  labs(title = "Employee-Management Relations and Pride in Firms Across Countries",  
+       subtitle = "ISSP, 2015", 
+       caption = "Note: Work in progress. Halliday, Ho '21 and Wettach '20.") +
+  theme(plot.caption = element_text(size = 8))
+ggsave(file = "../figures/country_management_pride.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
 ```{r}
 sumInc %>% 
   ggplot(aes(x = meanrelcol, y = meansat)) + 
+    stat_smooth(geom = "line", alpha = 0.4, size = 1, method = "lm", se = FALSE, col = "#2c7fb8") +
   geom_text(aes(label = c_alphan3)) + 
-  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
-  geom_vline(xintercept = 3.95, lty = 2, color = "pink") +
+  geom_hline(yintercept = 5.3, lty = 2, color = "#7fcdbb") + 
+  geom_vline(xintercept = 3.95, lty = 2, color = "#7fcdbb") +
   theme_bw() +
-  ylab("Mean job satisfaction") + 
-  xlab("Mean quality of employee-employee relations")
+  ylab("Mean job satisfaction (1 = very poor, 7 = very good)") + 
+  xlab("Mean quality of employee-employee relations") +
+  labs(title = "Job Satisfaction and Relationships with Colleagees in Firms Across Countries",  
+       subtitle = "ISSP, 2015; Fitted linear regression", 
+       caption = "Note: Work in progress. Halliday, Ho '21 and Wettach '20.") +
+  theme(plot.caption = element_text(size = 8))
+ggsave(file = "../figures/country_satisfaction_relations.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
 ```{r}
 sumInc %>% 
   ggplot(aes(x = meanrelcol, y = meanfp)) + 
   geom_text(aes(label = c_alphan3)) + 
-  geom_hline(yintercept = 3.61, lty = 2, color = "pink") + 
-  geom_vline(xintercept = 3.95, lty = 2, color = "pink") +
+  geom_hline(yintercept = 3.61, lty = 2, color = "#7fcdbb") + 
+  geom_vline(xintercept = 3.95, lty = 2, color = "#7fcdbb") +
   theme_bw() +
   ylab("Mean firm pride") + 
-  xlab("Mean quality of employee-employee relations")
+  xlab("Mean quality of employee-employee relations") +
+  labs(title = "Relationships with Colleagues and Pride in Firms Across Countries",  
+       subtitle = "ISSP, 2015", 
+       caption = "Note: Work in progress. Halliday, Ho '21 and Wettach '20.") +
+  theme(plot.caption = element_text(size = 8))
+ggsave(file = "../figures/country_pride_relations.png", width = 8, height = 6, units = c("in"), dpi = 300)
 ```
 
