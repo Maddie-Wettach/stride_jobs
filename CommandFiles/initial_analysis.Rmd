@@ -254,9 +254,21 @@ sumInc %>%
   geom_text(aes(label = c_alphan3)) + 
   geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
   geom_vline(xintercept = 3.65, lty = 2, color = "pink") +
-  theme_bw()
+  theme_bw() +
+  ylab("Mean job satisfaction") + 
+  xlab("Mean job pride")
 ```
 
+```{r}
+sumInc %>% 
+  ggplot(aes(x = meanfp, y = meansat)) + 
+  geom_text(aes(label = c_alphan3)) + 
+  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
+  geom_vline(xintercept = 3.61, lty = 2, color = "pink") +
+  theme_bw() +
+  ylab("Mean job satisfaction") + 
+  xlab("Mean firm pride")
+```
 
 
 ```{r}
@@ -265,6 +277,57 @@ sumInc %>%
   geom_text(aes(label = c_alphan3)) + 
   geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
   #geom_vline(xintercept = 3.65, lty = 2, color = "pink") +
-  theme_bw()
+  theme_bw() +
+  ylab("Mean job satisfaction") + 
+  xlab("Mean monthly income")
+```
+
+```{r}
+favstats(~meanrelcol, data=sumInc)
+```
+
+
+```{r}
+sumInc %>% 
+  ggplot(aes(x = meanrelman, y = meansat)) + 
+  geom_text(aes(label = c_alphan3)) + 
+  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
+  geom_vline(xintercept = 3.72, lty = 2, color = "pink") +
+  theme_bw() +
+  ylab("Mean job satisfaction") + 
+  xlab("Mean quality of employee-management relations")
+```
+
+```{r}
+sumInc %>% 
+  ggplot(aes(x = meanrelman, y = meanfp)) + 
+  geom_text(aes(label = c_alphan3)) + 
+  geom_hline(yintercept = 3.61, lty = 2, color = "pink") + 
+  geom_vline(xintercept = 3.72, lty = 2, color = "pink") +
+  theme_bw() +
+  ylab("Mean firm pride") + 
+  xlab("Mean quality of employee-management relations")
+```
+
+```{r}
+sumInc %>% 
+  ggplot(aes(x = meanrelcol, y = meansat)) + 
+  geom_text(aes(label = c_alphan3)) + 
+  geom_hline(yintercept = 5.3, lty = 2, color = "pink") + 
+  geom_vline(xintercept = 3.95, lty = 2, color = "pink") +
+  theme_bw() +
+  ylab("Mean job satisfaction") + 
+  xlab("Mean quality of employee-employee relations")
+```
+
+```{r}
+sumInc %>% 
+  ggplot(aes(x = meanrelcol, y = meanfp)) + 
+  geom_text(aes(label = c_alphan3)) + 
+  geom_hline(yintercept = 3.61, lty = 2, color = "pink") + 
+  geom_vline(xintercept = 3.95, lty = 2, color = "pink") +
+  theme_bw() +
+  ylab("Mean firm pride") + 
+  xlab("Mean quality of employee-employee relations")
 ```
 
